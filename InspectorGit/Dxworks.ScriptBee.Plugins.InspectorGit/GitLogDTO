@@ -1,0 +1,68 @@
+using Newtonsoft.Json;
+
+namespace Dxworks.ScriptBee.Plugin.InspectorGit.DTO;
+
+public record GitLogDTO
+{
+    public string Date;
+    public long Timestamp;
+    public List<CommitDTO> Commits;
+}
+
+public record CommitDTO
+{
+    public string Id;
+    public List<string> parentIds;
+    public string AuthorName;
+    public string AuthorEmail;
+    public string AuthorDate;
+    public string CommitterName;
+    public string CommitterEmail;
+    public string CommitterDate;
+    public string Message;
+    public List<ChangeDTO> Changes;
+}
+
+public record ChangeDTO
+{
+    public ChangeType Type;
+    public string OldFileName;
+    public string NewFileName;
+    public string ParentCommitId;
+    [JsonProperty("isBinary")]
+    public bool Binary;
+    public int AddedLines;
+    public int DeletedLines;
+    public List<HunkDTO> Hunks;
+    public int NumberOfHunks;
+}
+
+public record HunkDTO
+{
+    public HunkType Type;
+    public List<LineChangeDTO> AddedLineChanges;
+    public List<LineChangeDTO> DeletedLineChanges;
+    public List<LineChangeDTO> LineChanges;
+}
+
+public record LineChangeDTO
+{
+    public LineOperationDTO Operation;
+    public int Number;
+    public string Content;
+}
+
+public enum LineOperationDTO
+{
+    Add, Delete
+}
+
+public enum ChangeType
+{
+    Add, Delete, Modify, Rename
+}
+
+public enum HunkType
+{
+    Add, Delete, Modify
+}
