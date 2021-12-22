@@ -1,9 +1,6 @@
 ﻿using System;
-using System.IO;
-using InspectorGit.Dxworks.ScriptBee.Plugins.InspectorGit;
-using Newtonsoft.Json;
 
-namespace InspectorGit
+namespace Dxworks.ScriptBee.Plugins.InspectorGit
 {
     class Program
     {
