@@ -1,6 +1,6 @@
 using System;
 
-namespace Dxworks.ScriptBee.Plugins.InspectorGit;
+namespace Dxworks.ScriptBee.Plugins.InspectorGit{
 
 public static class IGLogConstants
 {
@@ -17,4 +17,5 @@ public static class IGLogConstants
     public const string GitLogDiffLineStart = "diff --git";
 
     public const string DevNull = "/dev/null";
+}
 }

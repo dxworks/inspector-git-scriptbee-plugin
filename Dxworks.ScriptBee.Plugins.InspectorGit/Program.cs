@@ -6,8 +6,7 @@ namespace Dxworks.ScriptBee.Plugins.InspectorGit
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-
+            Console.WriteLine("Done");
         }
     }
 }
