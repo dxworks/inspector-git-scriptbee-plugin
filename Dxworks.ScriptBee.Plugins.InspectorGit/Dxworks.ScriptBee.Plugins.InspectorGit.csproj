@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>preview</LangVersion>
         <RootNamespace>Dxworks.ScriptBee.Plugins.InspectorGit</RootNamespace>
@@ -10,6 +10,16 @@
 
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="resources" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="resources\honeydew.iglog">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
