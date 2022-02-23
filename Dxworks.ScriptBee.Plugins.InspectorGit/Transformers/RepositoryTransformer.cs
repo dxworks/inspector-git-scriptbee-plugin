@@ -203,7 +203,7 @@ public class RepositoryTransformer
 
     private List<Commit> computeAnnotatedLinesForChange(Change change)
     {
-        if (change.File.Binary || change.ParentChange == null)
+        if (change.File.Binary)
             return new List<Commit>();
 
         try

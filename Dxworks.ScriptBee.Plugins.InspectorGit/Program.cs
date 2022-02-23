@@ -15,7 +15,7 @@ namespace Dxworks.ScriptBee.Plugins.InspectorGit
             
             Console.WriteLine("Done reading Iglog");
             Console.WriteLine("Starting Transformation");
-            var repository = new RepositoryTransformer().Transform(gitlogDTO, false);
+            var repository = new RepositoryTransformer().Transform(gitlogDTO, true);
             Console.WriteLine("Done Transformation");
         }
     }
