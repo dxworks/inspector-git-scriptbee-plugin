@@ -13,11 +13,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="resources" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="resources\honeydew.iglog">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="resources\kafka.iglog">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

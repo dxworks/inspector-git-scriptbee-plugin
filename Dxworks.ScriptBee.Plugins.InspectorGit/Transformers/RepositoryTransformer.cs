@@ -98,7 +98,7 @@ public class RepositoryTransformer
                     {
                         var missingChange = GetMissingChange(changes);
                         if (computeAnnotatedLines)
-                            FixAnnotatedLines(changes, missingChange);
+                            FixAnnotatedLines(changes, missingChange, commit);
                         MergeFiles(changes, missingChange);
                         return changes;
                     }
@@ -107,14 +107,30 @@ public class RepositoryTransformer
 
         commit.Changes.ForEach(it => it.File.Changes.Add(it));
 
-        void FixAnnotatedLines(List<Change> changes, Change? missingChange)
+        void FixAnnotatedLines(List<Change> changes, Change? missingChange, Commit commit1)
         {
             if (missingChange != null)
-            {
                 changes.First().AnnotatedLines = missingChange.AnnotatedLines;
+
+            var annotatedFiles = changes.Select(it => it.AnnotatedLines).ToList();
+
+            for (var i = 0; i < annotatedFiles.First().Count; i++)
+            {
+                var currentAnnotatedLines = annotatedFiles.Select(it => it[i]).ToList();
+                var firstAnnotatedLine = currentAnnotatedLines.First();
+                currentAnnotatedLines.RemoveAt(0);
+                if (Equals(firstAnnotatedLine, commit))
+                {
+                    var find = currentAnnotatedLines.Find(it => !Equals(it, commit));
+                    if(find != null) 
+                        annotatedFiles[0][i] = find;
+                }
             }
 
-            // No idea what is going on here!
+            var firstChange = changes.First();
+            var restOfChanges = changes.ToList();
+            restOfChanges.RemoveAt(0);
+            restOfChanges.ForEach(it => it.AnnotatedLines = firstChange.AnnotatedLines);
         }
 
         void MergeFiles(List<Change> changes, Change? missingChange)
@@ -128,10 +144,10 @@ public class RepositoryTransformer
 
             if (files.Count > 1)
             {
-                var allFileChanges = files.SelectMany(it => it.Changes).Distinct();
+                var allFileChanges = files.SelectMany(it => it.Changes).Distinct().ToList();
                 var file = files.First();
                 file.Changes = allFileChanges.OrderBy(it => it.Commit.CommitterDate).ToList();
-                changes.ForEach(it => it.File = file);
+                allFileChanges.ForEach(it => it.File = file);
 
                 var list = files.ToList();
                 list.RemoveAt(0);
