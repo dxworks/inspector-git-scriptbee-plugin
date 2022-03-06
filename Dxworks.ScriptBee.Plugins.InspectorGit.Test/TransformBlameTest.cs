@@ -28,9 +28,9 @@ public class TransformBlameTest
     private static readonly string _honeydewIglogPath = "resources/honeydew.iglog";
     private static readonly string _kafkaIglogPath = "resources/kafka.iglog";
 
-    private static string _sutRepoPath = _honeydewRepoPath;
-    private static string _sutIglogPath = _honeydewIglogPath;
-    private static string _sutRepoUrl = _honeydewRepoUrl;
+    private static string _sutRepoPath = _kafkaRepoPath;
+    private static string _sutIglogPath = _kafkaIglogPath;
+    private static string _sutRepoUrl = _kafkaRepoUrl;
 
     [SetUp]
     public void Setup()
@@ -59,12 +59,18 @@ public class TransformBlameTest
         var repository = new RepositoryTransformer().Transform(gitlogDto, true);
         Debug.WriteLine("Done Transformation");
 
+        testBlames(repository);
+    }
+
+    private void testBlames(Repository repository)
+    {
         var allFilesOnDisk = walkDir(new DirectoryInfo(_sutRepoPath));
 
         var lastCommit = repository.Commits.Last();
 
         var lastChanges = repository.Files.Select(it => it.GetLastChange(lastCommit)).Where(it => it != null)
-            .Where(it => it != null && it.Type != ChangeType.Delete).ToDictionary(it => it.NewFileName);
+            .Select(it => it!)
+            .Where(it => it.Type != ChangeType.Delete).ToDictionary(it => it.NewFileName);
 
         Console.WriteLine(lastChanges.Count() - allFilesOnDisk.Count());
         var numberOfFiles = allFilesOnDisk.Count();
@@ -73,7 +79,7 @@ public class TransformBlameTest
         {
             count++;
             Debug.WriteLine($"file {count} of {numberOfFiles} ({count * 100 / numberOfFiles}%)");
-            
+
             var (output, error) = RunGitCommand($"blame {file} {lastCommit.Id}", _sutRepoPath);
             var blameCommits = output.Split('\n')
                 .Where(line => line.Any())
