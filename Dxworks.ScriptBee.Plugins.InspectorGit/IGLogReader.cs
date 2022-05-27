@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Dxworks.ScriptBee.Plugins.InspectorGit.DTO;
 using Dxworks.ScriptBee.Plugins.InspectorGit.Model;
+using File = System.IO.File;
 
 namespace Dxworks.ScriptBee.Plugins.InspectorGit;
 
@@ -12,9 +13,16 @@ public class IGLogReader
 {
     public GitLogDTO Read(string filePath)
     {
+        using var fileStream = File.Open(filePath, FileMode.Open);
+        return Read(Path.GetFileNameWithoutExtension(filePath), fileStream);
+    }
+
+    public GitLogDTO Read(string name, Stream stream)
+    {
         var currentCommitLines = new Queue<string>();
         var commits = new List<CommitDTO>();
-        using var sr = new StreamReader(filePath);
+
+        using var sr = new StreamReader(stream);
 
         string igLogVersion = null;
         if (sr.Peek() >= 0)
@@ -25,17 +33,30 @@ public class IGLogReader
         while (sr.Peek() >= 0)
         {
             var line = sr.ReadLine();
+            if (line == null)
+            {
+                continue;
+            }
+
             if (line.StartsWith(IGLogConstants.CommitIdPrefix))
             {
-                if (currentCommitLines.Any()) commits.Add(ReadCommit(currentCommitLines));
+                if (currentCommitLines.Any())
+                {
+                    commits.Add(ReadCommit(currentCommitLines));
+                }
+
                 currentCommitLines = new Queue<string>();
             }
 
             currentCommitLines.Enqueue(line);
         }
 
-        if (currentCommitLines.Any()) commits.Add(ReadCommit(currentCommitLines));
-        return new GitLogDTO(igLogVersion, Path.GetFileNameWithoutExtension(filePath), commits);
+        if (currentCommitLines.Any())
+        {
+            commits.Add(ReadCommit(currentCommitLines));
+        }
+
+        return new GitLogDTO(igLogVersion, name, commits);
     }
 
     private static CommitDTO ReadCommit(Queue<string> lines)

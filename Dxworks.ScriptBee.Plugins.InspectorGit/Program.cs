@@ -14,7 +14,7 @@ namespace Dxworks.ScriptBee.Plugins.InspectorGit
         private static readonly string RootDirPath =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".dxw", "scriptbee", "ig");
 
-        private const string IglogPath = "resources/kafka.iglog";
+        private const string IglogPath = "resources/honeydew.iglog";
 
         private static readonly string RepoPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -33,8 +33,8 @@ namespace Dxworks.ScriptBee.Plugins.InspectorGit
             Console.WriteLine("Starting Transformation");
             var repository = new RepositoryTransformer().Transform(gitLogDto);
             Console.WriteLine("Done Transformation");
-            var (wrongFiles, notFoundFiles) = TestBlames(repository);
-            Console.WriteLine("Done testing");
+            // var (wrongFiles, notFoundFiles) = TestBlames(repository);
+            // Console.WriteLine("Done testing");
         }
 
 

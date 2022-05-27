@@ -18,7 +18,7 @@ public class RepositoryTransformer
 
     public Repository Transform(GitLogDTO gitLogDto, bool computeAnnotatedLines = true)
     {
-        Repository repository = new Repository {Name = gitLogDto.Name};
+        Repository repository = new Repository { Name = gitLogDto.Name };
 
         var commitsCount = gitLogDto.Commits.Count;
 
@@ -122,7 +122,7 @@ public class RepositoryTransformer
                 if (Equals(firstAnnotatedLine, commit))
                 {
                     var find = currentAnnotatedLines.Find(it => !Equals(it, commit));
-                    if(find != null) 
+                    if (find != null)
                         annotatedFiles[0][i] = find;
                 }
             }

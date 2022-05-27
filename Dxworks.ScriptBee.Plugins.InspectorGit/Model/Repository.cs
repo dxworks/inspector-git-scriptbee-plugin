@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+using DxWorks.ScriptBee.Plugin.Api;
 
 namespace Dxworks.ScriptBee.Plugins.InspectorGit.Model;
 
-public class Repository
+public class Repository : ScriptBeeModel
 {
     public string Name { get; init; }
     public List<Commit> Commits { get; set; }
