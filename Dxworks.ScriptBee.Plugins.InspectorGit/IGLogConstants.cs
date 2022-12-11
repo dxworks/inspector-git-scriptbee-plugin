@@ -1,5 +1,3 @@
-using System;
-
 namespace Dxworks.ScriptBee.Plugins.InspectorGit{
 
 public static class IGLogConstants

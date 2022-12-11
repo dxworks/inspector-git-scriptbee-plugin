@@ -1,0 +1,1 @@
+﻿# Inspector Git ScriptBee Plugin

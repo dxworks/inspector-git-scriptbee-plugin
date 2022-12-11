@@ -1,2 +1,1 @@
-# inspector-git-scriptbee-plugin
-Work in progress
+# Inspector Git ScriptBee Plugin
