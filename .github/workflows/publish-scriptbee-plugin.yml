@@ -1,0 +1,60 @@
+name: Publish ScriptBee Plugin
+
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Extract Semver
+        id: semver_parser
+        run: |
+          semver=${TAG#"refs/tags/v"}
+          
+          echo ::set-output name=semver::$semver
+        env:
+          TAG: ${{ github.ref }}
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Release for OS
+        run: |
+          mkdir bin
+          dotnet publish -o bin -c Release -p:Version=${{ steps.semver_parser.outputs.semver }} Dxworks.ScriptBee.Plugins.InspectorGit/Dxworks.ScriptBee.Plugins.InspectorGit.csproj
+
+      - name: Prepare Assets
+        run: |
+          mkdir inspector-git
+          cp manifest.yaml inspector-git/manifest.yaml
+          rm bin/*.pdb
+          cp -R bin/*.dll inspector-git
+
+      - name: Create Archive
+        run: zip -j inspector-git@${{ steps.semver_parser.outputs.semver }}.zip inspector-git/*
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: inspector-git@${{ steps.semver_parser.outputs.semver }}.zip
+          path: inspector-git@${{ steps.semver_parser.outputs.semver }}.zip
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: inspector-git ${{ steps.semver_parser.outputs.semver }}
+          body: ""
+          prerelease: false
+          draft: false
+          fail_on_unmatched_files: true
+          files: |
+            ./inspector-git@${{ steps.semver_parser.outputs.semver }}.zip
