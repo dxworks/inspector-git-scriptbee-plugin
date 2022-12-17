@@ -10,7 +10,7 @@ namespace Dxworks.ScriptBee.Plugins.InspectorGit;
 
 public class ScriptBeeModelLoader : IModelLoader
 {
-    public string GetName() => "InspectorGit";
+    public string GetName() => "inspector-git";
 
     public Task<Dictionary<string, Dictionary<string, ScriptBeeModel>>> LoadModel(List<Stream> fileStreams,
         Dictionary<string, object> configuration = null, CancellationToken cancellationToken = default)
