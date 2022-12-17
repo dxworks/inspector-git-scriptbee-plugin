@@ -30,8 +30,11 @@ authors:
     github: https://github.com/nagyDarius
 
 scriptBee:
+  id: inspector-git
+  type: plugin
   versions:
     - version: 1.0.0
-      name: DxWorks.ScriptBee.Plugins.JiraMiner.dll
-      sourceCode: https://github.com/dxworks/inspector-git-scriptbee-plugin/tree/main/Dxworks.ScriptBee.Plugins.InspectorGit
-      asset: "https://github.com/dxworks/inspector-git-scriptbee-plugin/releases/download/v1.0.0/inspector-git@1.0.0.zip"      
+      name: dxworks/inspector-git-scriptbee-plugin
+      sourceCode: https://github.com/dxworks/inspector-git-scriptbee-plugin/tree/v1.0.0/Dxworks.ScriptBee.Plugins.InspectorGit
+      manifest: https://raw.githubusercontent.com/dxworks/inspector-git-scriptbee-plugin/v1.0.0/manifest.yaml
+      asset: inspector-git-scriptbee.zip

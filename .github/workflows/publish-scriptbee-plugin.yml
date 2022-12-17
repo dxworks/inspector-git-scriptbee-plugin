@@ -39,22 +39,22 @@ jobs:
           cp -R bin/*.dll inspector-git
 
       - name: Create Archive
-        run: zip -j inspector-git@${{ steps.semver_parser.outputs.semver }}.zip inspector-git/*
+        run: zip -j inspector-git-scriptbee.zip inspector-git/*
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: inspector-git@${{ steps.semver_parser.outputs.semver }}.zip
-          path: inspector-git@${{ steps.semver_parser.outputs.semver }}.zip
+          name: inspector-git-scriptbee.zip
+          path: inspector-git-scriptbee.zip
 
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          name: inspector-git ${{ steps.semver_parser.outputs.semver }}
+          name: inspector-git ScriptBee Plugin ${{ steps.semver_parser.outputs.semver }}
           body: ""
           prerelease: false
           draft: false
           fail_on_unmatched_files: true
           files: |
-            ./inspector-git@${{ steps.semver_parser.outputs.semver }}.zip
+            ./inspector-git-scriptbee.zip
